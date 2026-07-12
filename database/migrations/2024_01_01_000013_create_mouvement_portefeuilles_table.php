@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('statut')->default('EN_ATTENTE');
             $table->foreignUuid('portefeuille_id')->constrained('portefeuilles')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

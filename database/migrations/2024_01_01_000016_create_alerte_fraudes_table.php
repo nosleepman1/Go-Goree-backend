@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('traite_par')->nullable()->constrained('users')->nullOnDelete();
             $table->string('statut')->default('EN_ATTENTE');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

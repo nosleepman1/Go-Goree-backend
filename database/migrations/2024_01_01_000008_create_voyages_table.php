@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('trajet_id')->constrained('trajets')->restrictOnDelete();
             $table->foreignUuid('chaloupe_id')->constrained('chaloupes')->restrictOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

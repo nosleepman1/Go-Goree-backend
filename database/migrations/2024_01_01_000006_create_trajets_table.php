@@ -14,6 +14,7 @@ return new class extends Migration
             $table->time('heure_depart');
             $table->decimal('duree', 8, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

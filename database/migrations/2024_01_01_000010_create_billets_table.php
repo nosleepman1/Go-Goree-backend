@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('tarif_id')->constrained('tarifs')->restrictOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

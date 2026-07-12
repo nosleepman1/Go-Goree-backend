@@ -13,6 +13,7 @@ return new class extends Migration
             $table->boolean('active')->default(true);
             $table->foreignUuid('user_id')->unique()->constrained('users')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
