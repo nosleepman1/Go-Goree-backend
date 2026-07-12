@@ -5,13 +5,16 @@ namespace App\Listeners;
 use App\Events\PaiementWebhookRecu;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Écouteur pour consigner ou traiter les webhooks de paiement reçus de PayDunya.
+ */
 class TraiterWebhookPayDunya
 {
     /**
-     * Handle the event.
+     * Traiter l'événement.
      */
     public function handle(PaiementWebhookRecu $event): void
     {
-        Log::info("TraiterWebhookPayDunya triggered for event " . get_class($event));
+        Log::info('TraiterWebhookPayDunya : Webhook de paiement reçu. Données : ', $event->payload);
     }
 }

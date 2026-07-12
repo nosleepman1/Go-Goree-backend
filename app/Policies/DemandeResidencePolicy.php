@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\DemandeResidence;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
@@ -53,7 +53,7 @@ class DemandeResidencePolicy
         if ($this->isAdminOrAgent($user)) {
             return true;
         }
-        
+
         // Vérifie si la demande appartient à l'utilisateur connecté
         return $user->id === $demandeResidence->user_id;
     }
@@ -78,6 +78,14 @@ class DemandeResidencePolicy
      * Déterminer si l'utilisateur peut supprimer une demande de résidence.
      */
     public function delete(User $user, DemandeResidence $demandeResidence): bool
+    {
+        return $this->isAdmin($user);
+    }
+
+    /**
+     * Déterminer si l'utilisateur peut valider ou refuser une demande de résidence.
+     */
+    public function validate(User $user, DemandeResidence $demandeResidence): bool
     {
         return $this->isAdmin($user);
     }

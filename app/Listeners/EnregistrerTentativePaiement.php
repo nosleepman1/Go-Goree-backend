@@ -5,13 +5,22 @@ namespace App\Listeners;
 use App\Events\PaiementInitie;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Écouteur pour enregistrer/journaliser chaque tentative d'initialisation de paiement.
+ */
 class EnregistrerTentativePaiement
 {
     /**
-     * Handle the event.
+     * Traiter l'événement.
      */
     public function handle(PaiementInitie $event): void
     {
-        Log::info("EnregistrerTentativePaiement triggered for event " . get_class($event));
+        $payement = $event->payement;
+
+        if (! $payement) {
+            return;
+        }
+
+        Log::info("EnregistrerTentativePaiement : Paiement ID {$payement->id} initié. Montant : {$payement->montant} FCFA, Mode : {$payement->mode_payement->value}, Statut : {$payement->statut->value}");
     }
 }

@@ -148,8 +148,8 @@ app/
 │       ├── V1/Notifications/NotificationController.php  [OK]  index/show/update/destroy (pas de store, volontaire)
 │       └── Webhooks/PayDunyaWebhookController.php        [OK]  vérif. signature + idempotence, hors groupe api/
 │
-└── Policies/                                        (5 fichiers, tous [OK] — règles simples basées sur user->role->nom)
-    AbonnementPolicy · DemandeResidencePolicy · BilletPolicy · ScanPolicy · PayementPolicy
+└── Policies/                                        (4 fichiers, tous [OK] — règles simples basées sur user->role->nom)
+    DemandeResidencePolicy · BilletPolicy · ScanPolicy · PayementPolicy
 
 database/
 ├── migrations/                                      (18 fichiers, tous [OK] — validés par migrate:fresh)
