@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class DemandeResidence extends Model
+{
+    use HasFactory, HasUuids;
+
+    protected $fillable = [
+        'carte_identite',
+        'residence',
+        'statut',
+        'photo',
+        'motif_refus',
+        'valide_par',
+        'date_validation',
+        'user_id',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'statut' => \App\Enums\DemandeResidenceEnum::class,
+            'date_validation' => 'datetime',
+        ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function validateur()
+    {
+        return $this->belongsTo(User::class, 'valide_par');
+    }
+}
