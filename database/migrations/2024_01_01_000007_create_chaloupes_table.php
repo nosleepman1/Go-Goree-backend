@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('capacite');
             $table->string('statut')->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

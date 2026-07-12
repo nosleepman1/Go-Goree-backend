@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('categorie');
             $table->decimal('prix', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

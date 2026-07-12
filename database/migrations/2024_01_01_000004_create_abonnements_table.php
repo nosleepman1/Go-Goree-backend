@@ -15,6 +15,7 @@ return new class extends Migration
             $table->decimal('montant', 10, 2)->default(5000);
             $table->foreignUuid('resident_id')->constrained('residents')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

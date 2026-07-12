@@ -13,6 +13,7 @@ return new class extends Migration
             $table->decimal('solde', 12, 2)->default(0);
             $table->foreignUuid('user_id')->unique()->constrained('users')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

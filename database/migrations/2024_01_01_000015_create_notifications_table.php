@@ -15,6 +15,7 @@ return new class extends Migration
             $table->dateTime('lu_a')->nullable();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
