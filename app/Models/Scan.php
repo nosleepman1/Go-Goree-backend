@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ResultatScanEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,7 @@ class Scan extends Model
     protected function casts(): array
     {
         return [
-            'resultat' => \App\Enums\ResultatScanEnum::class,
+            'resultat' => ResultatScanEnum::class,
         ];
     }
 

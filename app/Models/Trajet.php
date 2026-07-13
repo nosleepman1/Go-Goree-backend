@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JourEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,7 @@ class Trajet extends Model
     protected function casts(): array
     {
         return [
-            'jour' => \App\Enums\JourEnum::class,
+            'jour' => JourEnum::class,
             'duree' => 'decimal:2',
         ];
     }

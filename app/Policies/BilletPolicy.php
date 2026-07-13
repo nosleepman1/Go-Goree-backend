@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Billet;
 use App\Enums\RoleEnum;
+use App\Models\Billet;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
@@ -54,7 +54,7 @@ class BilletPolicy
         if ($this->isAdminOrAgent($user)) {
             return true;
         }
-        
+
         // Vérifie si le billet appartient à l'utilisateur connecté
         return $user->id === $billet->user_id;
     }

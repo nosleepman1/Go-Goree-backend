@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatutChaloupeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ class Chaloupe extends Model
     protected function casts(): array
     {
         return [
-            'statut' => \App\Enums\StatutChaloupeEnum::class,
+            'statut' => StatutChaloupeEnum::class,
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ class Role extends Model
     protected function casts(): array
     {
         return [
-            'nom' => \App\Enums\RoleEnum::class,
+            'nom' => RoleEnum::class,
         ];
     }
 

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ModePayementEnum;
+use App\Enums\StatutPayementEnum;
+use App\Enums\TypeTransactionPayDunyaEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,9 +29,9 @@ class Payement extends Model
     protected function casts(): array
     {
         return [
-            'statut' => \App\Enums\StatutPayementEnum::class,
-            'mode' => \App\Enums\ModePayementEnum::class,
-            'type_transaction' => \App\Enums\TypeTransactionPayDunyaEnum::class,
+            'statut' => StatutPayementEnum::class,
+            'mode' => ModePayementEnum::class,
+            'type_transaction' => TypeTransactionPayDunyaEnum::class,
             'montant' => 'decimal:2',
             'timestamp' => 'datetime',
         ];

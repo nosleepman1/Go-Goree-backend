@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Payement;
 use App\Enums\RoleEnum;
+use App\Models\Payement;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
@@ -54,7 +54,7 @@ class PayementPolicy
         if ($this->isAdminOrAgent($user)) {
             return true;
         }
-        
+
         // Vérifie si le paiement appartient à l'utilisateur connecté
         return $user->id === $payement->user_id;
     }

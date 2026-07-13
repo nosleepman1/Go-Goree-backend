@@ -2,20 +2,22 @@
 
 namespace App\Services\Billetterie;
 
-use App\Models\User;
-use App\Models\Billet;
 use App\Enums\CategorieEnum;
 use App\Enums\ModePayementEnum;
 use App\Enums\StatutBilletEnum;
+use App\Enums\StatutPayementEnum;
+use App\Events\BilletAchete;
+use App\Events\PaiementAccepte;
+use App\Events\PaiementInitie;
+use App\Models\Billet;
+use App\Models\User;
 use App\Repositories\Contracts\BilletRepositoryInterface;
-use App\Services\Billetterie\SubServices\TarifResolverService;
-use App\Services\Billetterie\SubServices\PlaceReservationService;
 use App\Services\Billetterie\SubServices\BilletQrTokenGeneratorService;
 use App\Services\Billetterie\SubServices\PaymentInitiationService;
+use App\Services\Billetterie\SubServices\PlaceReservationService;
+use App\Services\Billetterie\SubServices\TarifResolverService;
 use App\Services\Portefeuille\PortefeuilleService;
 use Illuminate\Support\Facades\DB;
-use App\Events\BilletAchete;
-use App\Events\PaiementInitie;
 
 /**
  * Service orchestrant l'achat complet de billets de transport.
@@ -30,8 +32,7 @@ class BilletPurchaseService
         protected BilletQrTokenGeneratorService $qrTokenGenerator,
         protected PaymentInitiationService $paymentInitiation,
         protected PortefeuilleService $portefeuilleService
-    ) {
-    }
+    ) {}
 
     /**
      * Effectue le flux complet d'achat d'un billet.
@@ -42,8 +43,8 @@ class BilletPurchaseService
             $tarif = $this->tarifResolver->resolve($user, $requestedCategory);
 
             $reserved = $this->placeReservation->reserve($voyageId, 1);
-            if (!$reserved) {
-                throw new \Exception("Pas de places disponibles pour ce voyage.");
+            if (! $reserved) {
+                throw new \Exception('Pas de places disponibles pour ce voyage.');
             }
 
             $qrToken = $this->qrTokenGenerator->generate();
@@ -59,18 +60,19 @@ class BilletPurchaseService
 
             $paymentResult = $this->paymentInitiation->initiate($billet, $paymentMode);
 
-            if (!$paymentResult['success']) {
-                throw new \Exception("Échec de l'initiation du paiement: " . ($paymentResult['message'] ?? ''));
+            if (! $paymentResult['success']) {
+                throw new \Exception("Échec de l'initiation du paiement: ".($paymentResult['message'] ?? ''));
             }
 
             $payement = $paymentResult['payement'];
 
             if ($paymentMode === ModePayementEnum::PORTEFEUILLE) {
                 $this->portefeuilleService->debiter($user->id, (float) $tarif->prix, $payement->id);
-                
-                $payement->update(['statut' => \App\Enums\StatutPayementEnum::ACCEPTE]);
+
+                $payement->update(['statut' => StatutPayementEnum::ACCEPTE]);
                 $billet->update(['statut' => StatutBilletEnum::PAYE]);
 
+                event(new PaiementAccepte($payement));
                 event(new BilletAchete($billet));
             } else {
                 event(new PaiementInitie($payement));

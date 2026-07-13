@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Abonnement;
 use App\Enums\RoleEnum;
+use App\Models\Abonnement;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
@@ -46,7 +46,7 @@ class AbonnementPolicy
         if ($this->isAdminOrAgent($user)) {
             return true;
         }
-        
+
         return $abonnement->resident && $user->id === $abonnement->resident->user_id;
     }
 

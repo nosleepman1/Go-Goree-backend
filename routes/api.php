@@ -3,14 +3,14 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
-    // require __DIR__.'/api/v1/auth.php';
-    // require __DIR__.'/api/v1/users.php';
-    // require __DIR__.'/api/v1/residents.php';
-    // require __DIR__.'/api/v1/billetterie.php';
-    // require __DIR__.'/api/v1/voyages.php';
-    // require __DIR__.'/api/v1/portefeuille.php';
-    // require __DIR__.'/api/v1/fraude.php';
-    // require __DIR__.'/api/v1/notifications.php';
+    require __DIR__.'/api/v1/auth.php';
+    require __DIR__.'/api/v1/users.php';
+    require __DIR__.'/api/v1/residents.php';
+    require __DIR__.'/api/v1/billetterie.php';
+    require __DIR__.'/api/v1/voyages.php';
+    require __DIR__.'/api/v1/portefeuille.php';
+    require __DIR__.'/api/v1/fraude.php';
+    require __DIR__.'/api/v1/notifications.php';
 });
 
 // Le webhook PayDunya n'est PAS require ici, volontairement : ce fichier

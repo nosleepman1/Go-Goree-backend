@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatutBilletEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ class Billet extends Model
     protected function casts(): array
     {
         return [
-            'statut' => \App\Enums\StatutBilletEnum::class,
+            'statut' => StatutBilletEnum::class,
             'montant' => 'decimal:2',
         ];
     }

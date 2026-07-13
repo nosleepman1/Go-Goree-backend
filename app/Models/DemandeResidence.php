@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DemandeResidenceEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,7 @@ class DemandeResidence extends Model
     protected function casts(): array
     {
         return [
-            'statut' => \App\Enums\DemandeResidenceEnum::class,
+            'statut' => DemandeResidenceEnum::class,
             'date_validation' => 'datetime',
         ];
     }

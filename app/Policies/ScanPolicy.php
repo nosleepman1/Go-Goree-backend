@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Scan;
 use App\Enums\RoleEnum;
+use App\Models\Scan;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
@@ -38,7 +38,7 @@ class ScanPolicy
         if ($this->isAdminOrAgent($user)) {
             return true;
         }
-        
+
         return $scan->billet && $user->id === $scan->billet->user_id;
     }
 

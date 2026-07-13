@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Controllers\Api\V1\Portefeuille;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\V1\PortefeuilleResource;
+use App\Models\Portefeuille;
+use Illuminate\Http\Request;
+
+/**
+ * Contrôleur pour visualiser les informations du portefeuille.
+ */
+class PortefeuilleController extends Controller
+{
+    /**
+     * Afficher le portefeuille de l'utilisateur connecté.
+     */
+    public function show(Request $request)
+    {
+        $portefeuille = Portefeuille::where('user_id', $request->user()->id)->firstOrFail();
+
+        return new PortefeuilleResource($portefeuille);
+    }
+}

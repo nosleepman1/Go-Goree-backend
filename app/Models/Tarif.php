@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CategorieEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,7 @@ class Tarif extends Model
     protected function casts(): array
     {
         return [
-            'categorie' => \App\Enums\CategorieEnum::class,
+            'categorie' => CategorieEnum::class,
             'prix' => 'decimal:2',
         ];
     }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\NiveauAlerteFraudeEnum;
+use App\Enums\StatutAlerteFraudeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,8 +25,8 @@ class AlerteFraude extends Model
     protected function casts(): array
     {
         return [
-            'niveau' => \App\Enums\NiveauAlerteFraudeEnum::class,
-            'statut' => \App\Enums\StatutAlerteFraudeEnum::class,
+            'niveau' => NiveauAlerteFraudeEnum::class,
+            'statut' => StatutAlerteFraudeEnum::class,
             'payload_suspect' => 'array',
         ];
     }
@@ -38,6 +40,4 @@ class AlerteFraude extends Model
     {
         return $this->belongsTo(User::class, 'traite_par');
     }
-
-    
 }

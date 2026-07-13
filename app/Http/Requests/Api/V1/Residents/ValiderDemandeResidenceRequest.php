@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1\Residents;
 
+use App\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -11,10 +12,11 @@ class ValiderDemandeResidenceRequest extends FormRequest
 {
     /**
      * Déterminer si l'utilisateur est autorisé à effectuer cette requête.
+     * Seul un administrateur est autorisé à valider ou refuser une demande.
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user() && $this->user()->role && $this->user()->role->nom === RoleEnum::ADMIN;
     }
 
     /**
