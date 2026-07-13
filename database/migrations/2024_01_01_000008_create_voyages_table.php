@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -18,6 +19,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        // Au plus un voyage par (trajet, date) — évite les doublons de génération.
+        DB::statement(
+            'CREATE UNIQUE INDEX voyages_trajet_date_unique ON voyages (trajet_id, date_voyage) '.
+            'WHERE deleted_at IS NULL'
+        );
     }
 
     public function down(): void

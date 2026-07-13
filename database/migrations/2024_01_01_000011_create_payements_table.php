@@ -15,8 +15,9 @@ return new class extends Migration
             $table->string('statut')->default('EN_COURS');
             $table->string('mode');
             $table->string('type_transaction')->nullable();
-            $table->string('paydunya_token')->nullable();
+            $table->string('paydunya_token')->nullable()->index();
             $table->foreignUuid('billet_id')->nullable()->constrained('billets')->nullOnDelete();
+            $table->foreignUuid('plan_id')->nullable()->constrained('plans')->nullOnDelete();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();

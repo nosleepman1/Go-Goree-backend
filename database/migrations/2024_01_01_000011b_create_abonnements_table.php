@@ -14,6 +14,9 @@ return new class extends Migration
             $table->timestamp('date_fin')->nullable();
             $table->decimal('montant', 10, 2)->default(5000);
             $table->foreignUuid('resident_id')->constrained('residents')->cascadeOnDelete();
+            $table->foreignUuid('plan_id')->nullable()->constrained('plans')->nullOnDelete();
+            // Lien dur au paiement d'origine (idempotence d'activation fiable).
+            $table->foreignUuid('payement_id')->nullable()->constrained('payements')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

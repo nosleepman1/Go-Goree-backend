@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('telephone')->nullable();
             $table->string('mot_de_passe');
+            // NULL = compte créé par un admin dont le mot de passe n'a pas encore
+            // été défini (activation via lien email).
+            $table->timestamp('password_reset_at')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('est_resident')->default(false);
             $table->foreignUuid('role_id')->nullable()->constrained('roles')->nullOnDelete();
