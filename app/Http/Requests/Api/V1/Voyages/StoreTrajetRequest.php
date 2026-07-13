@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\V1\Voyages;
 
+use App\Enums\JourEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 /**
  * Requête de validation pour la création d'un trajet.
@@ -23,10 +25,9 @@ class StoreTrajetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'depart' => ['required', 'string', 'max:255'],
-            'arrivee' => ['required', 'string', 'max:255'],
+            'jour' => ['required', new Enum(JourEnum::class)],
             'heure_depart' => ['required', 'date_format:H:i'],
-            'duree' => ['required', 'integer', 'min:1'],
+            'duree' => ['required', 'numeric', 'min:1'],
         ];
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\Billetterie;
 
+use App\Enums\StatutPayementEnum;
+use App\Events\PaiementAccepte;
+use App\Events\PaiementRefuse;
 use App\Http\Controllers\Controller;
 use App\Models\Payement;
 use Illuminate\Http\Request;
@@ -44,7 +47,16 @@ class PayementController extends Controller
     public function update(Request $request, $id)
     {
         $record = Payement::findOrFail($id);
+        $oldStatus = $record->statut;
         $record->update($request->all());
+
+        if ($record->statut !== $oldStatus) {
+            if ($record->statut === StatutPayementEnum::ACCEPTE) {
+                event(new PaiementAccepte($record));
+            } elseif ($record->statut === StatutPayementEnum::REFUSE) {
+                event(new PaiementRefuse($record));
+            }
+        }
 
         return response()->json($record);
     }

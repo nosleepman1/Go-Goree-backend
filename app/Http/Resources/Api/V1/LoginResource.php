@@ -11,6 +11,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class LoginResource extends JsonResource
 {
     /**
+     * Disable wrapping for this resource.
+     */
+    public static $wrap = null;
+
+    /**
      * Transformer la ressource en tableau.
      */
     public function toArray(Request $request): array

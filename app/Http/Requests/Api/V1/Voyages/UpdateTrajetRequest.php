@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\V1\Voyages;
 
+use App\Enums\JourEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 /**
  * Requête de validation pour la mise à jour d'un trajet.
@@ -23,10 +25,9 @@ class UpdateTrajetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'depart' => ['sometimes', 'string', 'max:255'],
-            'arrivee' => ['sometimes', 'string', 'max:255'],
+            'jour' => ['sometimes', new Enum(JourEnum::class)],
             'heure_depart' => ['sometimes', 'date_format:H:i'],
-            'duree' => ['sometimes', 'integer', 'min:1'],
+            'duree' => ['sometimes', 'numeric', 'min:1'],
         ];
     }
 }

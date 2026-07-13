@@ -21,6 +21,6 @@ class EnregistrerTentativePaiement
             return;
         }
 
-        Log::info("EnregistrerTentativePaiement : Paiement ID {$payement->id} initié. Montant : {$payement->montant} FCFA, Mode : {$payement->mode_payement->value}, Statut : {$payement->statut->value}");
+        Log::info("EnregistrerTentativePaiement : Paiement ID {$payement->id} initié. Montant : {$payement->montant} FCFA, Mode : {$payement->mode->value}, Statut : {$payement->statut->value}");
     }
 }

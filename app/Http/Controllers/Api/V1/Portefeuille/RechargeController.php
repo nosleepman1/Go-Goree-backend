@@ -34,6 +34,7 @@ class RechargeController extends Controller
                 'statut' => StatutPayementEnum::EN_COURS,
                 'mode' => $mode,
                 'type_transaction' => TypeTransactionPayDunyaEnum::RECHARGE_PORTEFEUILLE,
+                'paydunya_token' => 'tok_'.Str::random(20),
                 'user_id' => $user->id,
             ]);
 

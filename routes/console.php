@@ -12,8 +12,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Rapport journalier : corrige l'ancien bug où l'événement était dispatché
-// avec un tableau vide codé en dur au lieu d'appeler RapportJournalierService.
 Schedule::call(function () {
     $donnees = app(RapportJournalierService::class)->generer(now());
     event(new RapportJournalierGenere($donnees));

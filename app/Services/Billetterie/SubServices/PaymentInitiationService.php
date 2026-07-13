@@ -2,11 +2,11 @@
 
 namespace App\Services\Billetterie\SubServices;
 
-use App\Models\Billet;
-use App\Models\Payement;
 use App\Enums\ModePayementEnum;
 use App\Enums\StatutPayementEnum;
 use App\Enums\TypeTransactionPayDunyaEnum;
+use App\Models\Billet;
+use App\Models\Payement;
 use Illuminate\Support\Str;
 
 /**
@@ -19,7 +19,7 @@ class PaymentInitiationService
      */
     public function initiate(Billet $billet, ModePayementEnum $mode): array
     {
-        $reference = 'PAY_' . Str::random(12);
+        $reference = 'PAY_'.Str::random(12);
 
         $payement = Payement::create([
             'reference' => $reference,
@@ -27,6 +27,7 @@ class PaymentInitiationService
             'statut' => StatutPayementEnum::EN_COURS,
             'mode' => $mode,
             'type_transaction' => TypeTransactionPayDunyaEnum::ACHAT_BILLET,
+            'paydunya_token' => 'tok_'.Str::random(20),
             'billet_id' => $billet->id,
             'user_id' => $billet->user_id,
         ]);

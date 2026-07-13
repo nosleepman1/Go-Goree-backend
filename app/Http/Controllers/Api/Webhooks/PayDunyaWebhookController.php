@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Webhooks;
 
 use App\Enums\StatutPayementEnum;
+use App\Events\PaiementAccepte;
+use App\Events\PaiementRefuse;
 use App\Events\PaiementWebhookRecu;
 use App\Http\Controllers\Controller;
 use App\Models\Payement;
@@ -36,8 +38,10 @@ class PayDunyaWebhookController extends Controller
             if ($payment) {
                 if ($status === 'completed' || $status === 'success') {
                     $payment->update(['statut' => StatutPayementEnum::ACCEPTE]);
+                    event(new PaiementAccepte($payment));
                 } elseif ($status === 'failed' || $status === 'cancelled') {
                     $payment->update(['statut' => StatutPayementEnum::REFUSE]);
+                    event(new PaiementRefuse($payment));
                 }
 
                 return response()->json(['message' => 'Paiement traité avec succès.'], Response::HTTP_OK);
