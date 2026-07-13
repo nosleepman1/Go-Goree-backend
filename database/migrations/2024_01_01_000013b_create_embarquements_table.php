@@ -22,22 +22,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        Schema::table('scans', function (Blueprint $table) {
-            $table->foreignUuid('embarquement_id')->nullable()->after('billet_id')
-                ->constrained('embarquements')->nullOnDelete();
-            $table->foreignUuid('scanne_par')->nullable()->after('embarquement_id')
-                ->constrained('users')->nullOnDelete();
-        });
     }
 
     public function down(): void
     {
-        Schema::table('scans', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('scanne_par');
-            $table->dropConstrainedForeignId('embarquement_id');
-        });
-
         Schema::dropIfExists('embarquements');
     }
 };

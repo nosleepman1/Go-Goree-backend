@@ -12,6 +12,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('resultat');
             $table->foreignUuid('billet_id')->constrained('billets')->cascadeOnDelete();
+            $table->foreignUuid('embarquement_id')->nullable()->constrained('embarquements')->nullOnDelete();
+            $table->foreignUuid('scanne_par')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
