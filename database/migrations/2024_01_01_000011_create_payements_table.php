@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignUuid('billet_id')->nullable()->constrained('billets')->nullOnDelete();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

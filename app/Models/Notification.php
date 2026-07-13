@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\CanalEnum;
+use App\Enums\NotificationEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Notification extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'type',
@@ -20,8 +23,8 @@ class Notification extends Model
     protected function casts(): array
     {
         return [
-            'type' => \App\Enums\NotificationEnum::class,
-            'canal' => \App\Enums\CanalEnum::class,
+            'type' => NotificationEnum::class,
+            'canal' => CanalEnum::class,
             'lu_a' => 'datetime',
         ];
     }

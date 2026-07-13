@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Enums\RoleEnum;
 use App\Models\Billet;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
@@ -18,7 +19,7 @@ class BilletPolicy
      */
     protected function isAdminOrAgent(User $user): bool
     {
-        return $user->role && in_array($user->role->nom, ['Admin', 'Agent']);
+        return $user->role && in_array($user->role->nom, [RoleEnum::ADMIN, RoleEnum::AGENT], true);
     }
 
     /**
@@ -26,7 +27,7 @@ class BilletPolicy
      */
     protected function isAdmin(User $user): bool
     {
-        return $user->role && $user->role->nom === 'Admin';
+        return $user->role && $user->role->nom === RoleEnum::ADMIN;
     }
 
     /**
@@ -34,7 +35,7 @@ class BilletPolicy
      */
     protected function isAgent(User $user): bool
     {
-        return $user->role && $user->role->nom === 'Agent';
+        return $user->role && $user->role->nom === RoleEnum::AGENT;
     }
 
     /**
@@ -53,7 +54,7 @@ class BilletPolicy
         if ($this->isAdminOrAgent($user)) {
             return true;
         }
-        
+
         // Vérifie si le billet appartient à l'utilisateur connecté
         return $user->id === $billet->user_id;
     }

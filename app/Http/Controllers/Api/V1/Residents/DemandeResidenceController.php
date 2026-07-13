@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Residents;
 
 use App\Enums\DemandeResidenceEnum;
+use App\Enums\RoleEnum;
 use App\Events\DemandeResidenceSoumise;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Residents\StoreDemandeResidenceRequest;
@@ -30,7 +31,7 @@ class DemandeResidenceController extends Controller
     {
         $query = DemandeResidence::query();
 
-        if ($request->user()->role && $request->user()->role->nom === 'Client') {
+        if ($request->user()->role && $request->user()->role->nom === RoleEnum::CLIENT) {
             $query->where('user_id', $request->user()->id);
         }
 
@@ -65,7 +66,7 @@ class DemandeResidenceController extends Controller
     {
         $demande = DemandeResidence::findOrFail($id);
 
-        if ($request->user()->role && $request->user()->role->nom === 'Client' && $demande->user_id !== $request->user()->id) {
+        if ($request->user()->role && $request->user()->role->nom === RoleEnum::CLIENT && $demande->user_id !== $request->user()->id) {
             return response()->json(['message' => 'Non autorisé.'], Response::HTTP_FORBIDDEN);
         }
 

@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\DemandeResidenceEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DemandeResidence extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'carte_identite',
@@ -24,7 +26,7 @@ class DemandeResidence extends Model
     protected function casts(): array
     {
         return [
-            'statut' => \App\Enums\DemandeResidenceEnum::class,
+            'statut' => DemandeResidenceEnum::class,
             'date_validation' => 'datetime',
         ];
     }

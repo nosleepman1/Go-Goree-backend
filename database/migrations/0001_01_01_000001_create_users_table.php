@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('est_resident')->default(false);
             $table->foreignUuid('role_id')->nullable()->constrained('roles')->nullOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

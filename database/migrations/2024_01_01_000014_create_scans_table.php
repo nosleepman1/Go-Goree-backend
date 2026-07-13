@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('resultat');
             $table->foreignUuid('billet_id')->constrained('billets')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

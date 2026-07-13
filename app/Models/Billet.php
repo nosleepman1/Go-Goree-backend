@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\StatutBilletEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Billet extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'qr_token',
@@ -22,7 +24,7 @@ class Billet extends Model
     protected function casts(): array
     {
         return [
-            'statut' => \App\Enums\StatutBilletEnum::class,
+            'statut' => StatutBilletEnum::class,
             'montant' => 'decimal:2',
         ];
     }

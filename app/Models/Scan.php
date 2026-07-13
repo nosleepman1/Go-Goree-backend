@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\ResultatScanEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Scan extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'resultat',
@@ -18,7 +20,7 @@ class Scan extends Model
     protected function casts(): array
     {
         return [
-            'resultat' => \App\Enums\ResultatScanEnum::class,
+            'resultat' => ResultatScanEnum::class,
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Billetterie;
 
 use App\Enums\CategorieEnum;
 use App\Enums\ModePayementEnum;
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Billetterie\StoreBilletRequest;
 use App\Http\Resources\Api\V1\BilletResource;
@@ -26,7 +27,7 @@ class BilletController extends Controller
     {
         $query = Billet::with(['voyage', 'tarif']);
 
-        if ($request->user()->role && $request->user()->role->nom === 'Client') {
+        if ($request->user()->role && $request->user()->role->nom === RoleEnum::CLIENT) {
             $query->where('user_id', $request->user()->id);
         }
 
@@ -66,7 +67,7 @@ class BilletController extends Controller
     {
         $billet = Billet::with(['voyage', 'tarif'])->findOrFail($id);
 
-        if ($request->user()->role && $request->user()->role->nom === 'Client' && $billet->user_id !== $request->user()->id) {
+        if ($request->user()->role && $request->user()->role->nom === RoleEnum::CLIENT && $billet->user_id !== $request->user()->id) {
             return response()->json(['message' => 'Non autorisé.'], Response::HTTP_FORBIDDEN);
         }
 

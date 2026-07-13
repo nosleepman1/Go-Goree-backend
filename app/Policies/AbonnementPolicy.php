@@ -3,14 +3,14 @@
 namespace App\Policies;
 
 use App\Enums\RoleEnum;
-use App\Models\Payement;
+use App\Models\Abonnement;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
- * Politique de sécurité pour la gestion des paiements.
+ * Politique de sécurité pour la gestion des abonnements.
  */
-class PayementPolicy
+class AbonnementPolicy
 {
     use HandlesAuthorization;
 
@@ -31,15 +31,7 @@ class PayementPolicy
     }
 
     /**
-     * Vérifier si l'utilisateur est un agent.
-     */
-    protected function isAgent(User $user): bool
-    {
-        return $user->role && $user->role->nom === RoleEnum::AGENT;
-    }
-
-    /**
-     * Déterminer si l'utilisateur peut voir la liste des paiements.
+     * Déterminer si l'utilisateur peut voir la liste des abonnements.
      */
     public function viewAny(User $user): bool
     {
@@ -47,38 +39,37 @@ class PayementPolicy
     }
 
     /**
-     * Déterminer si l'utilisateur peut voir un paiement spécifique.
+     * Déterminer si l'utilisateur peut voir un abonnement spécifique.
      */
-    public function view(User $user, Payement $payement): bool
+    public function view(User $user, Abonnement $abonnement): bool
     {
         if ($this->isAdminOrAgent($user)) {
             return true;
         }
 
-        // Vérifie si le paiement appartient à l'utilisateur connecté
-        return $user->id === $payement->user_id;
+        return $abonnement->resident && $user->id === $abonnement->resident->user_id;
     }
 
     /**
-     * Déterminer si l'utilisateur peut créer un enregistrement de paiement.
+     * Déterminer si l'utilisateur peut créer un abonnement.
      */
     public function create(User $user): bool
-    {
-        return true;
-    }
-
-    /**
-     * Déterminer si l'utilisateur peut modifier un paiement.
-     */
-    public function update(User $user, Payement $payement): bool
     {
         return $this->isAdmin($user);
     }
 
     /**
-     * Déterminer si l'utilisateur peut supprimer un paiement.
+     * Déterminer si l'utilisateur peut modifier un abonnement.
      */
-    public function delete(User $user, Payement $payement): bool
+    public function update(User $user, Abonnement $abonnement): bool
+    {
+        return $this->isAdmin($user);
+    }
+
+    /**
+     * Déterminer si l'utilisateur peut supprimer un abonnement.
+     */
+    public function delete(User $user, Abonnement $abonnement): bool
     {
         return $this->isAdmin($user);
     }
