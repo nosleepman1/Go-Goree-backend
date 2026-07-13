@@ -36,19 +36,7 @@ return [
     ],
 
 
-    'paydunya' => [
-        'mode' => env('PAYDUNYA_MODE', 'fake'),
-        'master_key' => env('PAYDUNYA_MASTER_KEY'),
-        'private_key' => env('PAYDUNYA_PRIVATE_KEY'),
-        'public_key' => env('PAYDUNYA_PUBLIC_KEY'),
-        'token' => env('PAYDUNYA_TOKEN'),
-        'base_url' => env('PAYDUNYA_BASE_URL', 'https://app.paydunya.com/api/v1'),
-        'environment' => env('PAYDUNYA_ENVIRONMENT', 'test'),
-        'webhook_secret' => env('PAYDUNYA_WEBHOOK_SECRET'),
-        'webhook_url' => env('PAYDUNYA_WEBHOOK_URL'),
-        'return_url' => env('PAYDUNYA_RETURN_URL'),
-        'cancel_url' => env('PAYDUNYA_CANCEL_URL'),
-    ],
+    // La configuration PayDunya vit dans son propre fichier : config/paydunya.php
 
     'fraude' => [
         'velocite_max_tentatives' => env('FRAUDE_VELOCITE_MAX_TENTATIVES', 5),
