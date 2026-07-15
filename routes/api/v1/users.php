@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Logs\ActivityLogController;
 use App\Http\Controllers\Api\V1\Users\ControleurController;
 use App\Http\Controllers\Api\V1\Users\UserController;
 use Illuminate\Support\Facades\Route;
@@ -11,4 +12,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
     Route::post('controleurs', [ControleurController::class, 'store']);
 
     Route::apiResource('users', UserController::class);
+
+    // Journal d'activités
+    Route::get('logs', [ActivityLogController::class, 'index']);
 });

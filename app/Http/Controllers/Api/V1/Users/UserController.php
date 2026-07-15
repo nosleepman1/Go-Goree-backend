@@ -29,6 +29,11 @@ class UserController extends Controller
     {
         $record = User::create($request->validated());
 
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Création utilisateur",
+            "Création de l'utilisateur : {$record->prenom} {$record->nom} ({$record->email})"
+        );
+
         return (new UserResource($record->load('role')))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -52,6 +57,15 @@ class UserController extends Controller
         $record = User::findOrFail($id);
         $record->update($request->validated());
 
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Modification utilisateur",
+            "Modification de l'utilisateur : {$record->prenom} {$record->nom} ({$record->email})"
+        );
+
+        if ($record->wasChanged('active') && ! $record->active) {
+            $record->tokens()->delete();
+        }
+
         return new UserResource($record->load('role'));
     }
 
@@ -61,6 +75,12 @@ class UserController extends Controller
     public function destroy($id)
     {
         $record = User::findOrFail($id);
+        
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Suppression utilisateur",
+            "Suppression de l'utilisateur : {$record->prenom} {$record->nom} ({$record->email})"
+        );
+
         $record->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);

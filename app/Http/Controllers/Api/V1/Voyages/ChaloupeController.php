@@ -28,6 +28,11 @@ class ChaloupeController extends Controller
     {
         $record = Chaloupe::create($request->validated());
 
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Création chaloupe", 
+            "Chaloupe : {$record->nom} ({$record->imatriculation})"
+        );
+
         return response()->json($record, Response::HTTP_CREATED);
     }
 
@@ -47,6 +52,11 @@ class ChaloupeController extends Controller
         $record = Chaloupe::findOrFail($id);
         $record->update($request->validated());
 
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Modification chaloupe", 
+            "Chaloupe : {$record->nom} (Statut : {$record->statut})"
+        );
+
         return response()->json($record);
     }
 
@@ -56,6 +66,12 @@ class ChaloupeController extends Controller
     public function destroy($id)
     {
         $record = Chaloupe::findOrFail($id);
+        
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Suppression chaloupe", 
+            "Chaloupe : {$record->nom}"
+        );
+
         $record->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
