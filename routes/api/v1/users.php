@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Logs\ActivityLogController;
 use App\Http\Controllers\Api\V1\Settings\ParametreController;
 use App\Http\Controllers\Api\V1\Rapports\RapportController;
 use App\Http\Controllers\Api\V1\Auth\PersonalAccessTokenController;
@@ -16,6 +17,8 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
 
     Route::apiResource('users', UserController::class);
 
+    // Journal d'activités
+    Route::get('logs', [ActivityLogController::class, 'index']);
     // Paramètres généraux
     Route::get('settings', [ParametreController::class, 'index']);
     Route::put('settings', [ParametreController::class, 'update']);

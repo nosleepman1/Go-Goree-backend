@@ -54,6 +54,11 @@ class VoyageController extends Controller
     {
         $record = Voyage::create($request->validated());
 
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Création voyage",
+            "Voyage planifié le : {$record->date_voyage} avec la chaloupe ID : {$record->chaloupe_id}"
+        );
+
         return (new VoyageResource($record->load(['trajet', 'chaloupe'])))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -77,6 +82,11 @@ class VoyageController extends Controller
         $record = Voyage::findOrFail($id);
         $record->update($request->validated());
 
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Modification voyage",
+            "Voyage ID : {$record->id} (Date : {$record->date_voyage}, Chaloupe ID : {$record->chaloupe_id})"
+        );
+
         return new VoyageResource($record->load(['trajet', 'chaloupe']));
     }
 
@@ -86,6 +96,12 @@ class VoyageController extends Controller
     public function destroy($id)
     {
         $record = Voyage::findOrFail($id);
+        
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Suppression voyage",
+            "Voyage du : {$record->date_voyage} (ID : {$record->id})"
+        );
+
         $record->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
@@ -97,6 +113,12 @@ class VoyageController extends Controller
     public function generer()
     {
         (new \App\Jobs\GenererVoyagesSemaineJob)->handle();
+
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Génération voyages",
+            "Déclenchement de la génération automatique pour les 7 prochains jours"
+        );
+
         return response()->json([
             'message' => 'Génération des voyages pour les 7 prochains jours terminée avec succès.'
         ]);

@@ -110,6 +110,11 @@ class DemandeResidenceController extends Controller
 
         $this->validationService->valider($demande, $request->user());
 
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Validation demande résident",
+            "Demande ID : {$demande->id} pour {$demande->user->prenom} {$demande->user->nom}"
+        );
+
         return response()->json([
             'message' => 'Demande de résidence validée.',
             'demande' => new DemandeResidenceResource($demande),
@@ -133,6 +138,11 @@ class DemandeResidenceController extends Controller
         ]);
 
         $this->validationService->refuser($demande, $request->motif_refus, $request->user());
+
+        app(\App\Services\Logs\ActivityLogService::class)->log(
+            "Refus demande résident",
+            "Demande ID : {$demande->id} (Motif : {$request->motif_refus})"
+        );
 
         return response()->json([
             'message' => 'Demande de résidence refusée.',
