@@ -1,58 +1,55 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Présentation du Projet Go Gorée
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ce document présente une vue d'ensemble du projet **Go Gorée**, décrit son architecture logicielle et détaille ses fonctionnalités principales.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Introduction au Projet
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Go Gorée** est le système backend d'une plateforme de billetterie et de gestion de transport pour les chaloupes reliant Dakar à l'île de Gorée. L'application est conçue pour gérer :
+*   **Les Utilisateurs & Rôles** : Clients (qui peuvent s'enregistrer et acheter des billets), Agents/Contrôleurs (qui scannent les billets à l'embarquement), et Administrateurs (gestion globale).
+*   **La Résidence** : Soumission de demandes de statut résident par les clients et validation par les administrateurs pour bénéficier de tarifs préférentiels.
+*   **Les Abonnements** : Souscriptions payantes (mensuelles, semestrielles ou annuelles) pour les résidents, leur permettant d'obtenir des billets gratuits.
+*   **La Billetterie** : Achat de billets via un portefeuille virtuel interne ou via la passerelle de paiement **PayDunya**.
+*   **La Sécurité & Anti-fraude** : Détection des doubles billets pour un même voyage et des scans multiples d'un même billet.
+*   **Le Temps Réel & Notifications** : Envoi de courriels/SMS et diffusion en temps réel (via WebSockets) d'événements (nouvelles demandes, alertes fraude).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 2. Architecture & Arborescence du Projet
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Le projet suit l'architecture standard d'une application Laravel moderne enrichie d'une couche Repository pour découpler la persistance et les services métiers.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Structure des répertoires principaux
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+*   **[`app/`](../app/)** : Contient le cœur de la logique applicative.
+    *   **[`app/Enums/`](../app/Enums/)** : Enums PHP natifs définissant les différents statuts et modes de paiement (ex. `StatutBilletEnum`, `ModePayementEnum`).
+    *   **[`app/Models/`](../app/Models/)** : Modèles Eloquent décrivant les tables de la base de données et leurs relations.
+    *   **[`app/Repositories/`](../app/Repositories/)** : Abstraction de l'accès aux données. Divisé en `Contracts` (interfaces) et `Eloquent` (implémentations).
+    *   **[`app/Services/`](../app/Services/)** : Services métiers orchestrant les règles de gestion (achat de billets, détection de fraude, gestion du portefeuille).
+    *   **[`app/Events/`](../app/Events/)** : Événements déclenchés par l'application (ex. `BilletAchete`, `FraudeDetectee`).
+    *   **[`app/Listeners/`](../app/Listeners/)** : Écouteurs d'événements exécutés de manière asynchrone via des files d'attente (queues).
+    *   **[`app/Mail/`](../app/Mail/)** : Classes d'envoi d'emails (reçus d'achat, alertes de fraude, rapports journaliers).
+    *   **[`app/Http/`](../app/Http/)** :
+        *   `Controllers/` : Contrôleurs de l'API (V1) et des webhooks.
+        *   `Requests/` : FormRequests validant et typant les données entrantes.
+        *   `Resources/` : Transformateurs de modèles en réponses JSON normalisées.
+    *   **[`app/Policies/`](../app/Policies/)** : Règles d'autorisation basées sur les rôles des utilisateurs.
+*   **[`database/`](../database/)** :
+    *   `migrations/` : Fichiers de structure de la base de données.
+    *   `seeders/` : Données de test et de référence (tarifs, rôles, chaloupes, trajets).
+*   **[`routes/`](../routes/)** :
+    *   `api.php` et `api/v1/` : Endpoints de l'API REST.
+    *   `webhooks/` : Endpoints de réception des notifications de paiement PayDunya.
+    *   `console.php` : Tâches planifiées de la console.
 
-## Agentic Development
+### Modèle de données & Relations clés
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
 ```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Role (Admin/Agent/Client) 1 ─── * User
+                                  ├── 0..1 Resident ── * Abonnement
+                                  ├── * DemandeResidence (statut de résident)
+                                  ├── 1 Portefeuille ── * MouvementPortefeuille ── * Payement
+                                  ├── * Payement ── * Billet ── * Scan
+                                  └── * Notification
+```
